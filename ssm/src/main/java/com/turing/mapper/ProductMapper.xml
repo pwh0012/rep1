@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.turing.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.turing.entity.Product">
+    <id column="prod_id" jdbcType="INTEGER" property="prodId" />
+    <result column="prod_name" jdbcType="VARCHAR" property="prodName" />
+    <result column="prod_type" jdbcType="VARCHAR" property="prodType" />
+    <result column="prod_batch" jdbcType="VARCHAR" property="prodBatch" />
+    <result column="pro_unit" jdbcType="VARCHAR" property="proUnit" />
+    <result column="pro_price" jdbcType="DECIMAL" property="proPrice" />
+    <result column="pro_memo" jdbcType="VARCHAR" property="proMemo" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    prod_id, prod_name, prod_type, prod_batch, pro_unit, pro_price, pro_memo
+  </sql>
+  <select id="selectByExample" parameterType="com.turing.entity.ProductExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product
+    where prod_id = #{prodId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where prod_id = #{prodId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.turing.entity.ProductExample">
+    delete from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.turing.entity.Product">
+    insert into product (prod_id, prod_name, prod_type, 
+      prod_batch, pro_unit, pro_price, 
+      pro_memo)
+    values (#{prodId,jdbcType=INTEGER}, #{prodName,jdbcType=VARCHAR}, #{prodType,jdbcType=VARCHAR}, 
+      #{prodBatch,jdbcType=VARCHAR}, #{proUnit,jdbcType=VARCHAR}, #{proPrice,jdbcType=DECIMAL}, 
+      #{proMemo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.turing.entity.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prodId != null">
+        prod_id,
+      </if>
+      <if test="prodName != null">
+        prod_name,
+      </if>
+      <if test="prodType != null">
+        prod_type,
+      </if>
+      <if test="prodBatch != null">
+        prod_batch,
+      </if>
+      <if test="proUnit != null">
+        pro_unit,
+      </if>
+      <if test="proPrice != null">
+        pro_price,
+      </if>
+      <if test="proMemo != null">
+        pro_memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="prodId != null">
+        #{prodId,jdbcType=INTEGER},
+      </if>
+      <if test="prodName != null">
+        #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodType != null">
+        #{prodType,jdbcType=VARCHAR},
+      </if>
+      <if test="prodBatch != null">
+        #{prodBatch,jdbcType=VARCHAR},
+      </if>
+      <if test="proUnit != null">
+        #{proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="proPrice != null">
+        #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proMemo != null">
+        #{proMemo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.turing.entity.ProductExample" resultType="java.lang.Long">
+    select count(*) from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product
+    <set>
+      <if test="record.prodId != null">
+        prod_id = #{record.prodId,jdbcType=INTEGER},
+      </if>
+      <if test="record.prodName != null">
+        prod_name = #{record.prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodType != null">
+        prod_type = #{record.prodType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.prodBatch != null">
+        prod_batch = #{record.prodBatch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proUnit != null">
+        pro_unit = #{record.proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proPrice != null">
+        pro_price = #{record.proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.proMemo != null">
+        pro_memo = #{record.proMemo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product
+    set prod_id = #{record.prodId,jdbcType=INTEGER},
+      prod_name = #{record.prodName,jdbcType=VARCHAR},
+      prod_type = #{record.prodType,jdbcType=VARCHAR},
+      prod_batch = #{record.prodBatch,jdbcType=VARCHAR},
+      pro_unit = #{record.proUnit,jdbcType=VARCHAR},
+      pro_price = #{record.proPrice,jdbcType=DECIMAL},
+      pro_memo = #{record.proMemo,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.turing.entity.Product">
+    update product
+    <set>
+      <if test="prodName != null">
+        prod_name = #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodType != null">
+        prod_type = #{prodType,jdbcType=VARCHAR},
+      </if>
+      <if test="prodBatch != null">
+        prod_batch = #{prodBatch,jdbcType=VARCHAR},
+      </if>
+      <if test="proUnit != null">
+        pro_unit = #{proUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="proPrice != null">
+        pro_price = #{proPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="proMemo != null">
+        pro_memo = #{proMemo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where prod_id = #{prodId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.turing.entity.Product">
+    update product
+    set prod_name = #{prodName,jdbcType=VARCHAR},
+      prod_type = #{prodType,jdbcType=VARCHAR},
+      prod_batch = #{prodBatch,jdbcType=VARCHAR},
+      pro_unit = #{proUnit,jdbcType=VARCHAR},
+      pro_price = #{proPrice,jdbcType=DECIMAL},
+      pro_memo = #{proMemo,jdbcType=VARCHAR}
+    where prod_id = #{prodId,jdbcType=INTEGER}
+  </update>
+</mapper>
